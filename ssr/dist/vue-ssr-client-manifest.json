@@ -1,0 +1,26 @@
+{
+  "publicPath": "/dist",
+  "all": [
+    "app.css",
+    "app.js"
+  ],
+  "initial": [
+    "app.css",
+    "app.js"
+  ],
+  "async": [],
+  "modules": {
+    "6586937f": [
+      0,
+      1
+    ],
+    "27555d5a": [
+      0,
+      1
+    ],
+    "2a7a4b8c": [
+      0,
+      1
+    ]
+  }
+}

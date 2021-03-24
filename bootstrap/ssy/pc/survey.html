@@ -1,0 +1,568 @@
+<style>
+    #survey-icon {
+        background: #FCE9DB;
+        position: fixed;
+        top: 50%;
+        transform: rotate(-90deg);
+        left: -71px;
+        padding: 5px 15px;
+        font-weight: bold;
+        font-size: 20px;
+        color: #000000;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    #survey-icon > svg {
+        transform: rotate(90deg);
+        vertical-align: text-top;
+    }
+
+    .overlay-black {
+        background: rgba(0, 0, 0, .5);
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: 999;
+    }
+
+    .survey-content {
+        position: fixed;
+        display: none;
+        width: 640px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: #ffffff;
+        z-index: 1000;
+        padding: 22px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        color: #000000;
+    }
+
+    .survey-logo {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .survey-step-one {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .survey-step {
+        display: none;
+        padding: 0 20px;
+        min-height: 180px;
+    }
+
+    .survey-close {
+        font-size: 36px;
+        float: right;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    .survey-box {
+        padding-bottom: 10px;
+    }
+
+    .survey-button {
+        background: #000000;
+        color: #ffffff;
+        padding: 5px 0;
+        width: 240px;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 3px;
+        border: 1px solid;
+        cursor: pointer;
+    }
+
+    .survey-button:hover {
+        color: #ffffff;
+    }
+
+    .survey-step .survey-check-label {
+        display: inline-block;
+        color: #000000;
+    }
+
+    .survey-step .radio_type {
+        width: 13px;
+        height: 13px;
+        appearance: none;
+        position: relative;
+        border: none;
+    }
+
+    .survey-step .radio_type:before {
+        content: '';
+        width: 13px;
+        height: 13px;
+        border: 1px solid #000000;
+        display: inline-block;
+        vertical-align: text-top;
+    }
+
+    .survey-step .radio_type:checked:before {
+        content: '';
+        width: 13px;
+        height: 13px;
+        border: 1px solid #000000;
+        background: #000000;
+        display: inline-block;
+        vertical-align: text-top;
+    }
+
+    .survey-step .radio_type:checked:after {
+        content: '';
+        width: 10px;
+        height: 5px;
+        border: 2px solid white;
+        border-top: transparent;
+        border-right: transparent;
+        text-align: center;
+        display: block;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        vertical-align: middle;
+        transform: rotate(-45deg);
+    }
+
+    .survey-step .radio_type:checked + label {
+        color: #000000;
+    }
+
+    .que-title {
+        font-size: 16px;
+        font-weight: bolder;
+        margin-bottom: 10px;
+    }
+
+    .survey-check-div {
+        padding: 9px 0;
+    }
+
+    .survey-submit {
+        display: none;
+    }
+
+    .survey-pre, .survey-pre:hover {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    .survey-propress {
+        position: relative;
+        background: #eeeeee;
+        width: 100%;
+    }
+
+    .survey-range {
+        width: 0%;
+        height: 4px;
+        background: #000000;
+        top: 0;
+        left: 0;
+    }
+
+    .survey-num {
+        position: absolute;
+        bottom: 2px;
+        left: 0;
+        transform: translateX(-50%);
+    }
+
+    .survey-check-div > textarea {
+        resize: none;
+    }
+
+    .survey-success {
+        display: none;
+    }
+
+    .survey-success-text {
+        font-size: 30px;
+        font-weight: bolder;
+        padding: 10px 0;
+    }
+
+    .survey-copy-code {
+        width: 325px;
+        margin-bottom: 40px;
+    }
+
+    .survey-action {
+        margin: 0 25px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .survey-copy-code-success {
+        opacity: 0;
+        min-width: 350px;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 4px;
+        border: 1px solid #e1f3d8;
+        color: #67c23a;
+        position: fixed;
+        left: 50%;
+        top: 30%;
+        transform: translateX(-50%);
+        background-color: #f0f9eb;
+        transition: opacity .3s, transform .4s, top .4s;
+        padding: 15px 15px 15px 20px;
+        z-index: 9999;
+        pointer-events: none;
+    }
+    .opacity1 {
+        opacity: 1;
+    }
+    .survey-success-code {
+        height: 52px;
+        line-height: 52px;
+        margin: 15px 0;
+        font-size: 24px;
+        background: url(//images.jeulia.com/promotion/en/cms/survey/4.jpg) no-repeat center;
+    }
+    .survey-flex-wrap {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .flex-block-4 > .survey-check-div {
+        width: 25%;
+    }
+
+    .flex-block-3 > .survey-check-div {
+        width: 33.3%;
+    }
+
+    .flex-block-2 > .survey-check-div {
+        width: 50%;
+    }
+
+    .flex-block-1 > .survey-check-div {
+        width: 100%;
+    }
+    .halfop5 {
+        animation: opacityTo5 5s;
+        -moz-animation: opacityTo5 5s;
+        -webkit-animation: opacityTo5 5s;
+        -o-animation: opacityTo5 5s;
+    }
+    .error-null{
+        color: #ff0000;
+        font-size: 12px;
+    }
+    @keyframes opacityTo5 {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: .5;
+        }
+    }
+
+    @-moz-keyframes opacityTo5 {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: .5;
+        }
+    }
+
+    @-webkit-keyframes opacityTo5 {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: .5;
+        }
+    }
+
+    @-o-keyframes opacityTo5 {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: .5;
+        }
+    }
+
+    @media only screen and (max-width: 767px) {
+        #survey-icon {
+            left: -60px;
+            padding: 3px 15px;
+            font-size: 15px;
+        }
+
+        #survey-icon > svg {
+            transform: rotate(90deg) scale(0.8);
+        }
+
+        .survey-content {
+            width: 95%;
+            padding: 10px;
+        }
+
+        .survey-step, .survey-step-one {
+            padding: 0 5px;
+        }
+
+        .survey-action {
+            margin: 0;
+        }
+
+        .survey-button {
+            width: 45%;
+        }
+
+        .survey-success-text {
+            font-size: 22px;
+            padding: 20px 0 10px;
+        }
+
+        .survey-copy-code {
+            width: 80%;
+            margin-bottom: 60px;
+        }
+
+        .start-survey {
+            width: 80%;
+        }
+
+        .survey-success-code {
+            font-size: 20px;
+        }
+
+        .survey-logo {
+            padding: 40px 0;
+        }
+
+        .survey-close {
+            font-size: 50px;
+            color: #777;
+        }
+    }
+</style>
+<div>
+    <div id="survey-icon">GET $15 OFF
+        <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2020"
+             xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20">
+            <path d="M275.692308 860.553846V163.446154c0-19.692308 25.6-33.476923 43.323077-17.723077l417.476923 340.676923c15.753846 11.815385 15.753846 37.415385 0 49.230769L319.015385 880.246154c-17.723077 13.784615-43.323077 1.969231-43.323077-19.692308z"
+                  p-id="2021" fill="#000"></path>
+        </svg>
+    </div>
+    <div class="overlay-black"></div>
+    <div class="survey-copy-code-success">Copied Successfully</div>
+    <div class="survey-content">
+        <a class="survey-close">×</a>
+        <div class="survey-logo"><img src="//images.jeulia.com/promotion/en/icons/logo/nav-logo.png" alt="logo"
+                                      style="width: 120px;"></div>
+        <div class="survey-step-one">
+            <div style="font-size: 23px;font-weight: bolder;">Hello! Thank you for opening this survey.</div>
+            <div style="padding: 20px 0;line-height: 25px;">It only takes a couple of minutes and will help Jeulia get a
+                better idea of your jewelry purchasing habits and wearing preferences.
+            </div>
+            <div style="font-size: 18px;">You will <strong>get a discount</strong> of $$ after finishing this survey
+            </div>
+        </div>
+        <form class="survey-form">
+            <input type="hidden" id="survey_id" name="survey[survey_id]" value="">
+            <div class="survey-box"></div>
+        </form>
+        <div class="survey-success" style="text-align: center;">
+            <div style="font-size: 18px;">Thank you for taking the time to answer this survey!</div>
+            <div style="" class="survey-success-text">You will get a discount of $15</div>
+            <div style="color: #777777;">Don't forget to use your discount code at checkout!</div>
+            <div>
+                <div class="survey-success-code">CODE:SUR15QY69Q2</div>
+            </div>
+            <div><a class="survey-button survey-copy-code">CLICK TO COPY THE CODE</a></div>
+        </div>
+
+        <div class="survey-action">
+            <div style="text-align: center;padding: 25px 0;"><a class="survey-button start-survey" style="">CONTINUE</a>
+            </div>
+            <div style="text-align: center;display: none;" class="survey-pre-next">
+                <div class="survey-propress">
+                    <div class="survey-range"></div>
+                    <div class="survey-num">1/7</div>
+                </div>
+                <div style="display: flex;justify-content: space-between;padding: 25px 0;">
+                    <a class="survey-button survey-pre">Previous</a>
+                    <a class="survey-button survey-next">Next</a>
+                    <a class="survey-button survey-submit">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    require(['jquery','https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.6/qs.min.js'], function ($,qs) {
+        var qustionsNumber;
+        var survey_id = 9;
+        var index = 0;
+        var expiration = 1 * 24 * 3600 * 1000;
+        var questions = "";
+        $(".survey-form #survey_id").val(survey_id);
+        $("#survey-icon").on("click", function () {
+            var oldTime = +localStorage.getItem("survey-" + survey_id);
+            if (oldTime && (new Date().getTime() - oldTime) < expiration) {
+                showCode();
+                $(".overlay-black").show();
+                $(".survey-content").show();
+            } else {
+                $.getJSON("https://survey.bizseas.com/api/survey/" + survey_id, function (response) {
+                    questions = response.questions;
+                    qustionsNumber = questions.length;
+                    var str = "";
+
+                    for (var i = 0; i < questions.length; i++) {
+                        str += '<div class="survey-step"><input type="hidden" name="survey[questions][' + i + '][question_id]" value="' + questions[i]["id"] + '"><div class="question-context"><div class="que-title">';
+                        if (questions[i].is_required) {
+                            str += '<span class="">*</span>';
+                        }
+                        str += (i + 1) + '.' + questions[i]["title"] + '</div><div class="pl-4 mb-4">';
+
+                        if (questions[i]["type"] === "text") {
+                            str += '<div class="survey-check-div"><textarea name="survey[questions][' + i + '][other_text]"></textarea></div>';
+                        } else {
+                            for (var j = 0; j < questions[i].answers.length; j++) {
+                                if (questions[i]["type"] === "radio") {
+                                    str += '<div class="survey-check-div">' +
+                                            '<label class="survey-check-label"><input type="radio" name="survey[questions][' + i + '][answer_id]" class="radio_type" value="' + questions[i].answers[j]["id"] + '">' + questions[i].answers[j]["answer"] + '</label></div>';
+                                } else if (questions[i]["type"] === "checkbox") {
+                                    str += '<div class="survey-check-div">' +
+                                            '<label class="survey-check-label"><input type="checkbox" name="survey[questions][' + i + '][answer_id][' + j + ']" class="radio_type" value="' + questions[i].answers[j]["id"] + '">' + questions[i].answers[j]["answer"] + '</label></div>';
+                                }
+                            }
+                        }
+                        str += '</div></div></div>';
+                    }
+                    $(".survey-box").append($(str));
+                    $(".overlay-black").show();
+                    $(".survey-content").show();
+                });
+            }
+        });
+        $(".survey-submit").on("click", function () {
+            if (!checkNull()) {
+                return
+            }
+            var formData = new FormData($(".survey-form")[0]);
+            var str = "";
+            formData.forEach(function(value, key){
+                str += key+"="+value+"&";
+            });
+            var pData = qs.parse(str).survey;
+            $.ajax({
+                url: "https://survey.bizseas.com/api/survey/" + survey_id,
+                type: 'POST',
+                data: pData,
+                global: false,
+                success: function (result) {
+                    localStorage.setItem("survey-" + survey_id, new Date().getTime());
+                    showCode();
+                }
+            });
+        });
+
+        function changeStep(index) {
+            var propress = ((index + 1) / qustionsNumber * 100).toFixed(1) + "%";
+            $(".survey-step").eq(index).fadeIn();
+            $(".survey-range").css("width", propress);
+            $(".survey-num").text((index + 1) + "/" + qustionsNumber).css("left", propress)
+        }
+
+        function copyToClipboard(content) {
+            var aux = document.createElement("input");
+            aux.setAttribute("value", content);
+            document.body.appendChild(aux);
+            aux.select();
+            aux.setSelectionRange(0, 20);
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+        }
+
+        function showCode() {
+            $(".survey-form").hide();
+            $(".survey-action").hide();
+            $(".survey-step-one").hide();
+            $(".survey-success").show();
+        }
+
+        $(".start-survey").on("click", function () {
+            $(".survey-step-one").hide();
+            $(this).parent().hide();
+            changeStep(index);
+            $(".survey-pre-next").show();
+        });
+        $(".survey-pre").on("click", function () {
+            if (index > 0) {
+                index--;
+                $(".survey-step").hide();
+                changeStep(index);
+                if (index < qustionsNumber - 1) {
+                    $(".survey-next").show();
+                    $(".survey-submit").hide();
+                }
+            }
+        });
+        function checkNull() {
+            if (questions[index]["is_required"] == 1) {
+                var val = "";
+                var ValDom = $(".survey-step").eq(index).find(".question-context");
+                if (questions[index]["type"] === "text") {
+                    val = ValDom.find("textarea").val();
+                } else {
+                    val = ValDom.find("input:" + questions[index]["type"] + ":checked").val();
+                }
+                if (!val) {
+                    alert("no emty");
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+
+        $(".survey-next").on("click", function () {
+            if (index < qustionsNumber) {
+                if (!checkNull()) {
+                    return
+                }
+                index++;
+                $(".survey-step").hide();
+                changeStep(index);
+                if (index == qustionsNumber - 1) {
+                    $(".survey-next").hide();
+                    $(".survey-submit").show();
+                }
+            }
+        });
+        $(".survey-close").on("click", function () {
+            $(".overlay-black").hide();
+            $(".survey-content").hide();
+        });
+        $(".survey-copy-code").on("click", function () {
+            copyToClipboard("SUR15QY69Q2");
+            $(".survey-copy-code-success").addClass("opacity1");
+            setTimeout(function () {
+                $(".survey-copy-code-success").removeClass("opacity1");
+            }, 1000);
+        });
+    })
+</script>

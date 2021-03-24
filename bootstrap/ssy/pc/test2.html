@@ -1,0 +1,48 @@
+<script>
+    function deepClone(source) {
+        if (source && typeof source === "object") {
+            var obj = source instanceof Array ? [] : {};
+            for (var i in source) {
+                if(source[i] && typeof source[i] === "object"){
+                    obj[i] = deepClone(source[i]);
+                }else{
+                    obj[i] = source[i]
+                }
+            }
+            return obj
+        }else {
+            return source;
+        }
+    }
+
+    var t = {a:1,b:2,c:function(){}};
+    var y = {a:1,b:2,c:[1,2,3],d:t};
+    console.log(deepClone(t));
+    console.log(deepClone(y));
+
+    function Mpromise(fn){
+        this.state = "padding";
+        this.list = [];
+        function _resolved(value){
+            this.state = "resolved";
+            this.list.forEach(function(item){
+                item(value);
+            })
+        }
+        function _reject(value){
+            this.state = "reject";
+        }
+        fn(_resolved.bind(this),_reject.bind(this))
+    }
+
+    Mpromise.prototype.then = function(cb){
+        this.list.push(cb);
+    };
+    new Mpromise(function(resolve,reject){
+        setTimeout(function(){
+            resolve(111);
+        },1000)
+    }).then(function(data){
+        console.log(data);
+    })
+</script>

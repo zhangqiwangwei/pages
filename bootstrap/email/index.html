@@ -1,0 +1,59 @@
+<table border="0" cellpadding="0" cellspacing="0" style="width: 600px; margin: auto; text-align: left;font-size: 20px;color: #444444;line-height: 33px;" width="600">
+    <tbody>
+    <tr>
+        <td colspan="4">
+            <a href="https://www.skuall.com/cart"><img src="https://images.skuall.com/email/en/b3.jpg?v=1" /></a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4" style="padding: 30px 35px;">
+            <div>Hi <span style="color: #ff0000;">{{ data.customer.name }}</span></div>
+            <div>We saw you put some products in your cart but didn't put the order through. Just for your convenience,we've saved all these items in your cart for you.</div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <div style="font-size: 28px;color: #000000;text-align: center;line-height: 60px;border: 1px solid #aaaaaa;margin-left: 10px;margin-right: 10px;"><em>YOUR CART</em></div>
+            <table border="0" cellpadding="0" cellspacing="0" style="width: 580px;margin: auto;border: 1px solid #aaa;color: #444444;font-size: 14px;text-align: center;">
+                <tr style="line-height: 45px;">
+                    <th>Items</th>
+                    <th style="text-align: left;">Product Detail</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Subtotal</th>
+                </tr>
+                {% for item in data.items  %}
+                <tr>
+                    <td style="border-top: 1px solid #aaaaaa;width: 105px;"><img src="{{item.item_image_url}}" style="max-width: 100%;width: 100%;"></td>
+                    <td style="border-top: 1px solid #aaaaaa;width: 235px;text-align: left;">{{item.item_name}}</td>
+                    <td style="border-top: 1px solid #aaaaaa;width: 80px;">{{item.qty}}</td>
+                    <td style="border-top: 1px solid #aaaaaa;width: 80px;">
+                        <div>{{item.format_final_price}}</div>
+                        <div style="color: #777777;"><s>{{item.format_market_price}}</s></div>
+                    </td>
+                    <td style="border-top: 1px solid #aaaaaa;width: 80px;">{{item.subtotal_format}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="5" style="border-top: 1px solid #aaaaaa;">
+                        <a href="https://www.skuall.com/cart" style="background: #FF9600;display: inline-block;color: #444444;font-size: 13px;padding: 10px 42px;margin: 15px;font-weight: bolder;text-decoration: none;"><em>CHECKOUT NOW</em></a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="4">
+            <div style="text-align: center;margin-top: 30px;font-size: 22px;font-weight: bolder;color: #000000;">YOU MAY ALSO LIKE</div>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="https://www.skuall.com/category-rings-16"><img src="https://images.skuall.com/email/en/a1.jpg" alt="rings"></a></td>
+        <td><a href="https://www.skuall.com/category-earrings-17"><img src="https://images.skuall.com/email/en/a2.jpg" alt="earrings"></a></td>
+        <td><a href="https://www.skuall.com/category-necklaces-18"><img src="https://images.skuall.com/email/en/a3.jpg" alt="necklaces"></a></td>
+        <td><a href="https://www.skuall.com/category-charms-19"><img src="https://images.skuall.com/email/en/a4.jpg" alt="charms&bracelets"></a></td>
+    </tr>
+
+    </tbody>
+</table>
